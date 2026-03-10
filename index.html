@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Comercial - Icasa Spa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-active {
+            border-left-color: #b45309;
+            background-color: #fffbeb;
+            color: #92400e;
+            font-weight: 600;
+        }
+        .step-card { transition: all 0.3s ease; }
+        .step-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: #b45309; }
+    </style>
+</head>
+<body class="bg-[#faf9f6] text-slate-700 h-screen flex overflow-hidden">
+
+    <!-- Chosen Palette: Warm Neutrals & Terracotta (Background: #faf9f6 Off-white, Text: #334155 Slate-700, Accents: #b45309 Amber-700 / Terracotta, Highlights: #fffbeb Amber-50) -->
+    <!-- Application Structure Plan: A dashboard-style SPA with a persistent sidebar navigation and a main content area. This structure allows the client to non-linearly explore the proposal (Overview, Phase 1 Deliverables, Phase 2 Process, and Investment) without losing context. It transforms a static document into an interactive presentation, making the heavy technical breakdown (14 láminas) easier to digest via interactive charts, and clarifying the payment schedule via visual progress bars. -->
+    <!-- Visualization & Content Choices: 1. Deliverables (Fase 1) -> Goal: Inform proportions -> Viz: Donut Chart (Chart.js) -> Interaction: Click slices to see details -> Justification: Shows that Architecture is the bulk of the work while allowing drill-down into specific plans without cluttering the screen. 2. Process (Fase 2) -> Goal: Organize workflow -> Viz: Interactive CSS Grid steps -> Interaction: Hover to highlight -> Justification: Clearly outlines the sequential methodology (Cubicación to Gantt). 3. Investment -> Goal: Inform and breakdown -> Viz: Stacked horizontal CSS progress bar -> Interaction: None (static visual) -> Justification: Provides immediate visual clarity on the 50/30/20 payment structure. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between h-full shadow-sm z-10 hidden md:flex">
+        <div>
+            <div class="p-6 border-b border-slate-100">
+                <h1 class="text-2xl font-bold text-slate-800 tracking-tight">ICASA<span class="text-amber-700">SPA</span></h1>
+                <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Propuesta Comercial</p>
+            </div>
+            <ul class="py-4" id="nav-menu">
+                <li><button data-target="sec-resumen" class="nav-btn w-full text-left px-6 py-3 border-l-4 border-transparent text-slate-600 hover:bg-slate-50 nav-active">Resumen Ejecutivo</button></li>
+                <li><button data-target="sec-fase1" class="nav-btn w-full text-left px-6 py-3 border-l-4 border-transparent text-slate-600 hover:bg-slate-50">Fase 1: Proyectos</button></li>
+                <li><button data-target="sec-fase2" class="nav-btn w-full text-left px-6 py-3 border-l-4 border-transparent text-slate-600 hover:bg-slate-50">Fase 2: Presupuestación</button></li>
+                <li><button data-target="sec-inversion" class="nav-btn w-full text-left px-6 py-3 border-l-4 border-transparent text-slate-600 hover:bg-slate-50">Valoración Económica</button></li>
+            </ul>
+        </div>
+        <div class="p-6 text-sm text-slate-500 border-t border-slate-100">
+            <p><strong>Para:</strong> Eduardo Ulloa</p>
+            <p><strong>Fecha:</strong> 09 Mar 2026</p>
+            <p class="mt-4 text-xs">www.icasa.cl<br>contacto@icasa.cl</p>
+        </div>
+    </nav>
+
+    <div class="md:hidden bg-white border-b border-slate-200 p-4 flex justify-between items-center absolute w-full z-20">
+        <h1 class="text-xl font-bold text-slate-800 tracking-tight">ICASA<span class="text-amber-700">SPA</span></h1>
+        <select id="mobile-nav" class="p-2 border border-slate-300 rounded text-sm bg-white">
+            <option value="sec-resumen">Resumen Ejecutivo</option>
+            <option value="sec-fase1">Fase 1: Proyectos</option>
+            <option value="sec-fase2">Fase 2: Presupuestación</option>
+            <option value="sec-inversion">Valoración Económica</option>
+        </select>
+    </div>
+
+    <main class="flex-1 h-full overflow-y-auto pt-16 md:pt-0 pb-12 px-6 md:px-12 scroll-smooth">
+        
+        <section id="sec-resumen" class="content-section max-w-5xl mx-auto py-10 animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">Servicios de Ingeniería y Arquitectura</h2>
+                <p class="text-lg text-slate-600 leading-relaxed bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                    Bienvenido a la presentación interactiva de su propuesta. Esta sección resume nuestro enfoque corporativo y las razones por las que Constructora Icasa Spa es el aliado ideal para su proyecto. Aquí encontrará nuestra filosofía de trabajo y las garantías de calidad que respaldan nuestra experiencia en remodelaciones de alto estándar.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                    <h3 class="text-xl font-semibold mb-4 text-amber-800 border-b pb-2">Nuestra Visión</h3>
+                    <p class="text-slate-600 mb-4">
+                        Entendemos que una remodelación es una <strong>inversión patrimonial significativa</strong>. Aplicamos metodologías de ingeniería de vanguardia para asegurar que el diseño conceptual se traduzca fielmente en una realidad constructiva duradera.
+                    </p>
+                    <p class="text-slate-600">
+                        Nuestra experiencia no solo se basa en la ejecución física, sino en una gestión técnica rigurosa que garantiza proyectos seguros, funcionales y estéticamente superiores.
+                    </p>
+                </div>
+
+                <div class="bg-slate-800 text-white p-8 rounded-xl shadow-md">
+                    <h3 class="text-xl font-semibold mb-4 text-amber-400">¿Por qué elegir Icasa Spa?</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-3">&#10003;</span>
+                            <div><strong>Experiencia Comprobada:</strong> Años transformando espacios con soluciones eficientes.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-3">&#10003;</span>
+                            <div><strong>Transparencia:</strong> Presupuestos detallados "llave en mano" sin sorpresas.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-3">&#10003;</span>
+                            <div><strong>Calidad Técnica:</strong> Profesionales colegiados a cargo de cada especialidad.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-3">&#10003;</span>
+                            <div><strong>Compromiso:</strong> Cumplimiento riguroso de plazos y normativas de seguridad.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-fase1" class="content-section max-w-6xl mx-auto py-10 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">Fase 1: Elaboración de Proyectos</h2>
+                <p class="text-lg text-slate-600 leading-relaxed bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                    La base de una ejecución exitosa es una planificación detallada. Esta sección detalla las <strong>14 láminas especializadas</strong> que nuestro equipo desarrollará. Interactúe con el gráfico a continuación seleccionando una especialidad para revelar el detalle específico de los planos y documentos técnicos que serán entregados en esta fase.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                <div>
+                    <h3 class="text-xl font-semibold text-center mb-6 text-slate-700">Distribución de Láminas (Total: 14)</h3>
+                    <div class="chart-container">
+                        <canvas id="laminasChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-slate-400 mt-4">Haga clic en un segmento para ver los detalles.</p>
+                </div>
+
+                <div class="flex flex-col justify-center">
+                    <div id="detalle-especialidad" class="bg-slate-50 p-6 rounded-lg border border-slate-200 h-full flex flex-col justify-center min-h-[300px]">
+                        <div class="text-center text-slate-400 italic" id="default-detalle">
+                            Seleccione una especialidad en el gráfico para ver el desglose de los planos y especificaciones.
+                        </div>
+                        <div id="content-detalle" class="hidden">
+                            <div class="flex items-center mb-4 pb-2 border-b border-slate-300">
+                                <span id="detalle-icon" class="text-3xl mr-3"></span>
+                                <h3 id="detalle-titulo" class="text-2xl font-bold text-amber-800"></h3>
+                            </div>
+                            <span id="detalle-cantidad" class="inline-block bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded font-bold mb-4 uppercase tracking-wide"></span>
+                            <ul id="detalle-lista" class="space-y-3 text-slate-700"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-amber-50 border-l-4 border-amber-600 p-6 rounded-r-lg">
+                <h4 class="text-lg font-bold text-amber-900 mb-2">&#127916; Visualización Avanzada</h4>
+                <p class="text-amber-800">Además de los planos técnicos, esta fase incluye el desarrollo de <strong>Imágenes Realistas y un Recorrido Virtual</strong> (Render y Video). Esta partida permite una comprensión volumétrica y material total del proyecto, facilitando la toma de decisiones estéticas antes del inicio de la construcción.</p>
+            </div>
+        </section>
+
+        <section id="sec-fase2" class="content-section max-w-5xl mx-auto py-10 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">Fase 2: Desarrollo de Propuesta</h2>
+                <p class="text-lg text-slate-600 leading-relaxed bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                    Una vez definidos los planos técnicos en la Fase 1, procedemos a la ingeniería de costos. Esta sección ilustra el proceso administrativo y técnico secuencial de 5 pasos diseñado para garantizar la transparencia financiera y evitar sobrecostos durante la obra. Pase el cursor sobre cada tarjeta para conocer el detalle de la actividad.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 relative overflow-hidden group">
+                    <div class="text-5xl font-bold text-slate-100 absolute -top-4 -right-2 z-0 group-hover:text-amber-50 transition-colors">1</div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-3">&#128208;</div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Cubicación de Proyectos</h3>
+                        <p class="text-sm text-slate-600">Medición exacta de cantidades de obra (m², m³, kg, ml) basada rigurosamente en los planos de la Fase 1.</p>
+                    </div>
+                </div>
+
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 relative overflow-hidden group">
+                    <div class="text-5xl font-bold text-slate-100 absolute -top-4 -right-2 z-0 group-hover:text-amber-50 transition-colors">2</div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-3">&#128178;</div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Cotización de Materiales</h3>
+                        <p class="text-sm text-slate-600">Gestión de compras estratégicas con proveedores líderes de la industria para asegurar la mejor relación calidad-precio.</p>
+                    </div>
+                </div>
+
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 relative overflow-hidden group">
+                    <div class="text-5xl font-bold text-slate-100 absolute -top-4 -right-2 z-0 group-hover:text-amber-50 transition-colors">3</div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-3">&#128202;</div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Análisis de Precios (APU)</h3>
+                        <p class="text-sm text-slate-600">Desglose técnico y detallado de mano de obra, materiales y herramientas asignadas a cada partida específica.</p>
+                    </div>
+                </div>
+
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 relative overflow-hidden group lg:col-start-1 lg:col-end-3 lg:w-2/3 lg:mx-auto">
+                    <div class="text-5xl font-bold text-slate-100 absolute -top-4 -right-2 z-0 group-hover:text-amber-50 transition-colors">4</div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-3">&#128188;</div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Presupuesto Final</h3>
+                        <p class="text-sm text-slate-600">Consolidación de todos los costos analizados en un presupuesto maestro cerrado y transparente para su revisión.</p>
+                    </div>
+                </div>
+
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 relative overflow-hidden group lg:col-start-2 lg:col-end-4 lg:w-2/3 lg:mx-auto">
+                    <div class="text-5xl font-bold text-slate-100 absolute -top-4 -right-2 z-0 group-hover:text-amber-50 transition-colors">5</div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-3">&#128197;</div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Carta Gantt</h3>
+                        <p class="text-sm text-slate-600">Elaboración del cronograma maestro de obra para definir plazos de entrega estrictos, fases y hitos de avance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-inversion" class="content-section max-w-5xl mx-auto py-10 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">Valoración Económica</h2>
+                <p class="text-lg text-slate-600 leading-relaxed bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                    Esta sección presenta el resumen financiero de los servicios de ingeniería y arquitectura propuestos. Se detalla la inversión total requerida y la estructura de pagos fragmentada diseñada para acompañar el avance del proyecto, brindando seguridad y claridad financiera.
+                </p>
+            </div>
+
+            <div class="bg-white p-10 rounded-xl shadow-lg border-t-8 border-amber-700 text-center mb-10">
+                <h3 class="text-xl font-bold text-slate-500 uppercase tracking-widest mb-2">Inversión Total</h3>
+                <div class="text-6xl font-extrabold text-slate-800 mb-4">$ 1.390.000.-</div>
+                <div class="inline-block bg-slate-100 text-slate-600 px-4 py-2 rounded-full text-sm font-semibold">
+                    &#9201; Oferta válida por 15 días a partir del 09 de marzo de 2026
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6">Estructura de Pagos</h3>
+                
+                <div class="w-full h-8 flex rounded-lg overflow-hidden mb-6 shadow-inner">
+                    <div class="bg-slate-800 h-full w-1/2 flex items-center justify-center text-xs font-bold text-white tracking-wider" title="50% Anticipo">50%</div>
+                    <div class="bg-amber-600 h-full w-[30%] flex items-center justify-center text-xs font-bold text-white tracking-wider" title="30% Avance">30%</div>
+                    <div class="bg-amber-300 h-full w-1/5 flex items-center justify-center text-xs font-bold text-amber-900 tracking-wider" title="20% Saldo Final">20%</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 border border-slate-100 rounded bg-slate-50">
+                        <div class="flex items-center mb-2">
+                            <div class="w-4 h-4 bg-slate-800 rounded mr-2"></div>
+                            <h4 class="font-bold text-slate-800">Anticipo</h4>
+                        </div>
+                        <p class="text-sm text-slate-600">Al inicio del proyecto para dar comienzo formal a los trabajos de la Fase 1.</p>
+                    </div>
+                    <div class="p-4 border border-slate-100 rounded bg-slate-50">
+                        <div class="flex items-center mb-2">
+                            <div class="w-4 h-4 bg-amber-600 rounded mr-2"></div>
+                            <h4 class="font-bold text-slate-800">Avance</h4>
+                        </div>
+                        <p class="text-sm text-slate-600">Contra entrega y validación de los puntos 2 (Especialidades) y 3 (Presupuestación).</p>
+                    </div>
+                    <div class="p-4 border border-slate-100 rounded bg-slate-50">
+                        <div class="flex items-center mb-2">
+                            <div class="w-4 h-4 bg-amber-300 rounded mr-2"></div>
+                            <h4 class="font-bold text-slate-800">Saldo Final</h4>
+                        </div>
+                        <p class="text-sm text-slate-600">Al momento de la entrega definitiva del proyecto con las correcciones incorporadas.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-4 bg-blue-50 text-blue-800 rounded border border-blue-100 flex items-start">
+                    <span class="text-xl mr-3">&#8505;</span>
+                    <div>
+                        <strong class="block mb-1">Consideración Técnica</strong>
+                        <p class="text-sm">Se incluyen hasta <strong>2 sesiones de correcciones</strong> para asegurar que el diseño final se ajuste perfectamente a sus requerimientos y expectativas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-slate-600 mb-6 font-semibold">Estamos listos para dar el primer paso en la transformación de su propiedad.</p>
+                <button onclick="alert('Funcionalidad de contacto para agendar reunión.');" class="bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-colors transform hover:scale-105 duration-200">
+                    Agendar Reunión Técnica
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const appData = {
+            especialidades: {
+                'Arquitectura': {
+                    count: 11,
+                    icon: '&#127960;',
+                    color: '#1e293b', 
+                    details: [
+                        '<strong>Diseño de Plantas y Techumbre:</strong> Definición precisa de espacios, circulaciones y la envolvente superior.',
+                        '<strong>Detalle de Cerchas y Cubierta:</strong> Cálculo estructural y especificación de materiales.',
+                        '<strong>Lay-out y Elevaciones:</strong> Visualización de fachadas y distribución espacial.',
+                        '<strong>Especificaciones Técnicas (EETT):</strong> Documento normativo de calidad de materiales.'
+                    ]
+                },
+                'Electricidad': {
+                    count: 1,
+                    icon: '&#9889;',
+                    color: '#d97706',
+                    details: [
+                        '<strong>Plano de Iluminación y Enchufes:</strong> Diseño de centros de luz y puntos de fuerza (Solo centros).',
+                        'Balance de carga eléctrica.',
+                        'Cumplimiento de normativas vigentes de seguridad.'
+                    ]
+                },
+                'Gas': {
+                    count: 1,
+                    icon: '&#128293;',
+                    color: '#ea580c', 
+                    details: [
+                        '<strong>Red de Distribución:</strong> Trazado técnico de centros de consumo (Solo centros).',
+                        'Priorización de seguridad hermética.',
+                        'Eficiencia en suministro de energía térmica.'
+                    ]
+                },
+                'Sanitaria': {
+                    count: 1,
+                    icon: '&#128167;',
+                    color: '#0284c7',
+                    details: [
+                        '<strong>Piping Sanitario:</strong> Diseño detallado de redes de agua potable y alcantarillado (Solo centros).',
+                        'Disposición estratégica de puntos de descarga y alimentación.'
+                    ]
+                }
+            }
+        };
+
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.content-section');
+        const mobileNav = document.getElementById('mobile-nav');
+        let chartInstance = null;
+        let chartRendered = false;
+
+        function showSection(targetId) {
+            sections.forEach(sec => sec.classList.add('hidden'));
+            const targetSection = document.getElementById(targetId);
+            if(targetSection) targetSection.classList.remove('hidden');
+
+            navBtns.forEach(btn => btn.classList.remove('nav-active'));
+            const activeBtn = Array.from(navBtns).find(btn => btn.dataset.target === targetId);
+            if(activeBtn) activeBtn.classList.add('nav-active');
+
+            mobileNav.value = targetId;
+
+            if (targetId === 'sec-fase1' && !chartRendered) {
+                renderChart();
+                chartRendered = true;
+            }
+        }
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                showSection(e.target.dataset.target);
+            });
+        });
+
+        mobileNav.addEventListener('change', (e) => {
+            showSection(e.target.value);
+        });
+
+        function updateDetailsPanel(label) {
+            const data = appData.especialidades[label];
+            const defaultPanel = document.getElementById('default-detalle');
+            const contentPanel = document.getElementById('content-detalle');
+            
+            if(data) {
+                defaultPanel.classList.add('hidden');
+                contentPanel.classList.remove('hidden');
+                
+                document.getElementById('detalle-icon').innerHTML = data.icon;
+                document.getElementById('detalle-titulo').innerText = label;
+                document.getElementById('detalle-cantidad').innerText = data.count + (data.count === 1 ? ' Lámina' : ' Láminas');
+                
+                const ul = document.getElementById('detalle-lista');
+                ul.innerHTML = '';
+                data.details.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-start text-sm";
+                    li.innerHTML = `<span class="text-amber-500 mr-2 mt-1">&#8226;</span> <span>${item}</span>`;
+                    ul.appendChild(li);
+                });
+            }
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('laminasChart').getContext('2d');
+            const labels = Object.keys(appData.especialidades);
+            const dataCounts = labels.map(l => appData.especialidades[l].count);
+            const bgColors = labels.map(l => appData.especialidades[l].color);
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataCounts,
+                        backgroundColor: bgColors,
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Inter', sans-serif" },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + (context.parsed === 1 ? ' Lámina' : ' Láminas');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const label = chartInstance.data.labels[index];
+                            updateDetailsPanel(label);
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
